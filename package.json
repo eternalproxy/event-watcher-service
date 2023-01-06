@@ -1,0 +1,26 @@
+{
+  "type":"module",
+  "name": "upwork-jan-03",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joaovwfreire/Simple-node-blockchain-app---Upwork-jan-03.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joaovwfreire/Simple-node-blockchain-app---Upwork-jan-03/issues"
+  },
+  "homepage": "https://github.com/joaovwfreire/Simple-node-blockchain-app---Upwork-jan-03#readme",
+  "dependencies": {
+    "axios": "^1.2.2",
+    "dotenv": "^16.0.3",
+    "ethers": "^5.7.2",
+    "mongodb": "^4.13.0"
+  }
+}
