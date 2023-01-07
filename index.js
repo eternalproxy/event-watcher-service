@@ -8,7 +8,7 @@ const uri = `${process.env.MONGO_DB_URI}`;
 
 async function main() {
 console.log("\n Event listener started")
-const provider = new ethers.providers.AlchemyProvider('mainnet', process.env.ALCHEMY_API_KEY);
+const provider = new ethers.providers.AlchemyProvider('goerli', process.env.ALCHEMY_API_KEY);
 const client = new MongoClient(uri, { serverApi: ServerApiVersion.v1 });
 const db = client.db("UpworkProject");
 
@@ -21,6 +21,8 @@ const filter = {
 }
 console.log(`\n __________ \n \n Listening to contract: ${filter.address} \n __________ \n \n topics: ${filter.topics}`)
 provider.on(filter, (log, event) => {
+
+    console.log(log);
 
     // constants defined here for clarity purposes.
     const topics = log.topics;
