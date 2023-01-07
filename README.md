@@ -14,7 +14,7 @@ In case it finds one, it attempts to do the api call and only deletes the table 
 ## Get Started
 
 ```
-npm install
+npm install  
 ```
 Create a .env file with your KEYS and relevant parameters. You can follow .env.example.
 
