@@ -1,6 +1,9 @@
 # Node.js event listener with MongoDB integration.
 
-Clone the repo: git clone https://github.com/eternalproxy/event-watcher-service
+To run:
+
+npm install pm2 -g; git clone https://github.com/eternalproxy/event-watcher-service && cd event-watcher-service; npm install; pm2 start event-watcher-service/watcher.js
+
 
 install pm2: 
 

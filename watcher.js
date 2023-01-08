@@ -33,19 +33,13 @@ async function main() {
   }
 
   db
-  .collection('successLog')
-  .insertOne(
-    {
-      chain: chain,
-      chainString: chain.toString(),
-      contract: contractAddress,
-      tokenId: tokenId,
-      tokenIdString: tokenId.toString(),
-      futureExecutionDate: futureExecutionDate,
-      futureExecutionDateString: futureExecutionDate.toString(),
-      log: log
-    }
-  )
+    .collection('activityLog')
+    .insertOne(
+      {
+        service: "watcher",
+        action: "started"
+      }
+    )
 
   console.log(`\n __________ \n \n Listening to contract: ${filter.address} \n __________ \n \n topics: ${filter.topics}`)
   provider.on(filter, (log, event) => {
