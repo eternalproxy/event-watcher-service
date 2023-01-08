@@ -9,6 +9,11 @@ const uri = `${process.env.MONGO_DB_URI}`;
 const client = new MongoClient(uri, { serverApi: ServerApiVersion.v1 });
 const db = client.db("event-watcher");
 
+const http = require('http');
+
+const hostname = 'localhost';
+const port = 3000;
+
 const apiCall = (contractAddress, tokenId, chain, log, futureExecutionDate) => {
   //return axios.get(`https://testnets-api.opensea.io/api/v1/asset/${contractAddress}/${tokenId}/?force_update=true`, { headers: {'X-API-KEY': openSeaKey} })
   let url;
@@ -21,6 +26,11 @@ const apiCall = (contractAddress, tokenId, chain, log, futureExecutionDate) => {
 }
 
 async function main() {
+
+  server.listen(port, hostname, () => {
+    console.log(`Server running at http://${hostname}:${port}/`);
+  });
+
   console.log("\n Event listener starting")
   const provider = new ethers.providers.AlchemyProvider('goerli', process.env.ALCHEMY_API_KEY);
 
@@ -52,14 +62,16 @@ async function main() {
       db
         .collection('successLog')
         .insertOne(
-          { chain: chain, 
-            chainString: chain.toString(), 
-            contract: contractAddress, 
-            tokenId: tokenId, 
-            tokenIdString: tokenId.toString(), 
-            futureExecutionDate: futureExecutionDate, 
-            futureExecutionDateString: futureExecutionDate.toString(), 
-            log: log }
+          {
+            chain: chain,
+            chainString: chain.toString(),
+            contract: contractAddress,
+            tokenId: tokenId,
+            tokenIdString: tokenId.toString(),
+            futureExecutionDate: futureExecutionDate,
+            futureExecutionDateString: futureExecutionDate.toString(),
+            log: log
+          }
         )
       console.log("Succesfull api call")
     }
@@ -67,14 +79,16 @@ async function main() {
       db
         .collection('errorLog')
         .insertOne(
-          { chain: chain, 
-            chainString: chain.toString(), 
-            contract: contractAddress, 
-            tokenId: tokenId, 
-            tokenIdString: tokenId.toString(), 
-            futureExecutionDate: futureExecutionDate, 
+          {
+            chain: chain,
+            chainString: chain.toString(),
+            contract: contractAddress,
+            tokenId: tokenId,
+            tokenIdString: tokenId.toString(),
+            futureExecutionDate: futureExecutionDate,
             futureExecutionDateString: futureExecutionDate.toString(),
-            log: log }
+            log: log
+          }
         )
       console.log("Failed api call")
     }
@@ -83,13 +97,15 @@ async function main() {
       const insertEvent = db
         .collection('futureEventsLog')
         .insertOne(
-          { chain: chain, 
-            chainString: chain.toString(), 
-            contract: contractAddress, 
-            tokenId: tokenId, 
-            tokenIdString: tokenId.toString(), 
-            futureExecutionDate: futureExecutionDate, 
-            futureExecutionDateString: futureExecutionDate.toString() }
+          {
+            chain: chain,
+            chainString: chain.toString(),
+            contract: contractAddress,
+            tokenId: tokenId,
+            tokenIdString: tokenId.toString(),
+            futureExecutionDate: futureExecutionDate,
+            futureExecutionDateString: futureExecutionDate.toString()
+          }
         )
       console.log(`Found event with future action requirement. \n ____________ \n`)
       console.log(`Storing event at database.`)
