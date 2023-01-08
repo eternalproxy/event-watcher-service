@@ -86,7 +86,7 @@ async function main() {
 
     if (futureExecutionDate != 0) {
       const insertEvent = db
-        .collection('futureEventsLog')
+        .collection('futureEvents')
         .insertOne(
           {
             chain: chain,
