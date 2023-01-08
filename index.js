@@ -7,12 +7,7 @@ config({ path: process.ENV })
 
 const uri = `${process.env.MONGO_DB_URI}`;
 const client = new MongoClient(uri, { serverApi: ServerApiVersion.v1 });
-const db = client.db("event-watcher");
-
-const http = require('http');
-
-const hostname = 'localhost';
-const port = 3000;
+const db = client.db("eps-event-watcher");
 
 const apiCall = (contractAddress, tokenId, chain, log, futureExecutionDate) => {
   //return axios.get(`https://testnets-api.opensea.io/api/v1/asset/${contractAddress}/${tokenId}/?force_update=true`, { headers: {'X-API-KEY': openSeaKey} })
@@ -26,10 +21,6 @@ const apiCall = (contractAddress, tokenId, chain, log, futureExecutionDate) => {
 }
 
 async function main() {
-
-  server.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
-  });
 
   console.log("\n Event listener starting")
   const provider = new ethers.providers.AlchemyProvider('goerli', process.env.ALCHEMY_API_KEY);
