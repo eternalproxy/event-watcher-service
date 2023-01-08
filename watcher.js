@@ -36,22 +36,19 @@ async function main() {
     .collection('activityLog')
     .insertOne(
       {
-        service: "watcher",
-        action: "started"
+        service: "rerun",
+        action: "started",
+        timestamp: Math.round(Date.now() / 1000)
       }
     )
 
   console.log(`\n __________ \n \n Listening to contract: ${filter.address} \n __________ \n \n topics: ${filter.topics}`)
   provider.on(filter, (log, event) => {
 
-    console.log(log);
-
     const decodedData = ethers.utils.defaultAbiCoder.decode(
       ['uint256', 'address', 'uint256', 'uint256'],
       log.data
     )
-
-    console.log(decodedData);
 
     const chain = decodedData[0];
     const contractAddress = decodedData[1];
@@ -64,6 +61,7 @@ async function main() {
         .collection('successLog')
         .insertOne(
           {
+            event: "eventCaught",
             chain: chain,
             chainString: chain.toString(),
             contract: contractAddress,
@@ -81,6 +79,7 @@ async function main() {
         .collection('errorLog')
         .insertOne(
           {
+            event: "eventCaught",
             chain: chain,
             chainString: chain.toString(),
             contract: contractAddress,
