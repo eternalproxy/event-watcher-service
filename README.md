@@ -1,5 +1,15 @@
 # Node.js event listener with MongoDB integration.
 
+Clone the repo: git clone https://github.com/eternalproxy/event-watcher-service
+
+install pm2: 
+
+Start the services: pm2 start event-watcher-service/watcher.js
+
+List running services: pm2 list
+
+
+
 ## Brief Description
 
 This application is comprised of two features. The first one is the live block catcher. It is a websocket that sees new events and evaluates
