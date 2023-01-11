@@ -65,7 +65,7 @@ async function main() {
               {
                 event: "rerunCall",
                 chain: document.chain,
-                chainString: document.chain.toString(),
+                chainString: document.chainString,
                 contract: document.contract,
                 tokenId: document.tokenId,
                 tokenIdString: document.tokenIdString,
