@@ -36,7 +36,7 @@ async function main() {
     .collection('activityLog')
     .insertOne(
       {
-        service: "watcher",
+        service: "watcher-goerli",
         action: "started",
         timestamp: Math.round(Date.now() / 1000)
       }

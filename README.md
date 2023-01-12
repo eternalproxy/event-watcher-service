@@ -2,7 +2,13 @@
 
 To run:
 
-npm install pm2 -g; git clone https://github.com/eternalproxy/event-watcher-service && cd event-watcher-service; npm install; pm2 start watcher.js; pm2 start rerun.js; pm2 start watcher-goerli.js;
+Event watch:
+
+npm install pm2 -g; git clone https://github.com/eternalproxy/event-watcher-service && cd event-watcher-service; npm install; pm2 start watcher.js --max-memory-restart 300M; pm2 start watcher-goerli.js --max-memory-restart 300M;
+
+Rerun:
+
+npm install pm2 -g; git clone https://github.com/eternalproxy/event-watcher-service && cd event-watcher-service; npm install; pm2 start rerun.js --max-memory-restart 600M;
 
 
 List running services: pm2 list
