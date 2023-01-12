@@ -103,8 +103,8 @@ async function main() {
     }
   }
   console.log(`Succesfully checked ${count} documents`)
-  console.log('Waiting 30 seconds before new checks')
-  setTimeout(function () { console.log('Reestarting checks'); main(); }, 30000);
+  console.log('Waiting 60 seconds before new checks')
+  setTimeout(function () { console.log('Reestarting checks'); main(); }, 60000);
 
 }
 
