@@ -3,12 +3,6 @@ import axios from "axios";
 
 import { config } from "dotenv";
 
-const express = require('express')
-const app = express()
-const port = process.env.PORT || 3000
-
-app.listen(port, () => console.log(`EPS event watch and rerun service listening on port ${port}!`))
-
 config({ path: process.ENV })
 
 const uri = `${process.env.MONGO_DB_URI}`;
