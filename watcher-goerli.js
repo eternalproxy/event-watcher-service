@@ -23,7 +23,7 @@ const apiCall = (contractAddress, tokenId, chain, log, futureExecutionDate) => {
 async function main() {
 
   console.log("\n Event listener starting")
-  const provider = new ethers.providers.AlchemyProvider(goerli, process.env.ALCHEMY_API_KEY_GOERLI);
+  const provider = new ethers.providers.AlchemyProvider("goerli", process.env.ALCHEMY_API_KEY_GOERLI);
 
   const filter = {
     address: process.env.CONTRACT_ADDRESS,
