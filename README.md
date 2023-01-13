@@ -10,6 +10,11 @@ Rerun:
 
 npm install pm2 -g; git clone https://github.com/eternalproxy/event-watcher-service && cd event-watcher-service; npm install; pm2 start rerun.js --max-memory-restart 600M;
 
+npm install pm2 -g; npm install axios -g; npm install dotenv -g; npm install ethers -g; npm install mongodb -g; pm2 start rerun.js --max-memory-restart 600M;
+
+npm install pm2 -g; git clone https://github.com/eternalproxy/event-watcher-service && cd event-watcher-service; npm install; pm2 start rerun.js --cron-restart="* * * * *"
+
+
 
 List running services: pm2 list
 
