@@ -1,11 +1,12 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
-import axios from "axios";
-
+import fetch from 'node-fetch';
 import { config } from "dotenv";
 
 config({ path: process.ENV })
 
 const uri = `${process.env.MONGO_DB_URI}`;
+
+const openSeaKey = process.env.OPEN_SEA_API_KEY;
 
 const isTimestampReady = (futureExecutionDate) => {
 
@@ -19,14 +20,24 @@ const isTimestampReady = (futureExecutionDate) => {
 }
 
 const apiCall = (contractAddress, tokenId, chain) => {
-  //return axios.get(`https://testnets-api.opensea.io/api/v1/asset/${contractAddress}/${tokenId}/?force_update=true`, { headers: {'X-API-KEY': openSeaKey} })
-  let url;
+
+  const options = { method: 'GET', headers: { 'X-API-KEY': openSeaKey } };
+
   if (chain == 1) {
-    url = `https://api.opensea.io/api/v1/asset/${contractAddress}/${tokenId}/?force_update=true`;
+
+    fetch(`https://api.opensea.io/api/v1/asset/${contractAddress}/${tokenId}/?force_update=true`, options)
+      .then(response => response.json())
+      .then(response => console.log(response))
+      .catch(err => console.log(err));
+
   } else {
-    url = `https://testnets-api.opensea.io/api/v1/asset/${contractAddress}/${tokenId}/?force_update=true`;
+
+    fetch(`https://testnets-api.opensea.io/api/v1/asset/${contractAddress}/${tokenId}/?force_update=true`, options)
+      .then(response => response.json())
+      .then(response => console.log(response))
+      .catch(err => console.log(err));
+
   }
-  return axios.get(url);
 }
 
 
@@ -36,14 +47,14 @@ async function main() {
   const db = client.db("eps-event-watcher");
 
   db
-  .collection('activityLog')
-  .insertOne(
-    {
-      service: "rerun",
-      action: "started",
-      timestamp: Math.round(Date.now() / 1000)
-    }
-  )
+    .collection('activityLog')
+    .insertOne(
+      {
+        service: "rerun",
+        action: "loop",
+        timestamp: Math.round(Date.now() / 1000)
+      }
+    )
 
   console.log(`\n __________ \n \n Checking database for refresh events.\n __________ \n \n`)
 
@@ -71,7 +82,8 @@ async function main() {
                 tokenId: document.tokenId,
                 tokenIdString: document.tokenIdString,
                 futureExecutionDate: document.futureExecutionDate,
-                futureExecutionDateString: document.futureExecutionDateString
+                futureExecutionDateString: document.futureExecutionDateString,
+                futureExecutionDateYYYMMDD: document.futureExecutionDateYYYMMDD
               }
             )
           console.log("Succesfull rerun api call")
@@ -92,7 +104,8 @@ async function main() {
                 tokenId: document.tokenId,
                 tokenIdString: document.tokenIdString,
                 futureExecutionDate: document.futureExecutionDate,
-                futureExecutionDateString: document.futureExecutionDateString
+                futureExecutionDateString: document.futureExecutionDateString,
+                futureExecutionDateYYYMMDD: document.futureExecutionDateYYYMMDD
               }
             )
           console.log("Failed api call")
@@ -103,8 +116,8 @@ async function main() {
     }
   }
   console.log(`Succesfully checked ${count} documents`)
-  console.log('Waiting 5 before new checks')
-  setTimeout(function () { console.log('Reestarting checks'); main(); }, 300000);
+  console.log('Waiting 1 minute before new checks')
+  setTimeout(function () { console.log('Reestarting checks'); main(); }, 60000);
 
 }
 

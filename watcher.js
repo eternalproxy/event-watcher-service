@@ -1,7 +1,7 @@
 import ethers from "ethers";
 import { MongoClient, ServerApiVersion } from "mongodb";
 import { config } from "dotenv";
-import axios from "axios";
+import fetch from 'node-fetch';
 
 config({ path: process.ENV })
 
@@ -9,15 +9,16 @@ const uri = `${process.env.MONGO_DB_URI}`;
 const client = new MongoClient(uri, { serverApi: ServerApiVersion.v1 });
 const db = client.db("eps-event-watcher");
 
-const apiCall = (contractAddress, tokenId, chain, log, futureExecutionDate) => {
-  //return axios.get(`https://testnets-api.opensea.io/api/v1/asset/${contractAddress}/${tokenId}/?force_update=true`, { headers: {'X-API-KEY': openSeaKey} })
-  let url;
-  if (chain == 1) {
-    url = `https://api.opensea.io/api/v1/asset/${contractAddress}/${tokenId}/?force_update=true`;
-  } else {
-    url = `https://testnets-api.opensea.io/api/v1/asset/${contractAddress}/${tokenId}/?force_update=true`;
-  }
-  return axios.get(url);
+const openSeaKey = process.env.OPEN_SEA_API_KEY;
+
+const apiCall = (contractAddress, tokenId) => {
+
+  const options = { method: 'GET', headers: { 'X-API-KEY': openSeaKey } };
+
+  fetch(`https://api.opensea.io/api/v1/asset/${contractAddress}/${tokenId}/?force_update=true`, options)
+    .then(response => response.json())
+    .then(response => console.log(response))
+    .catch(err => console.log(err));
 }
 
 async function main() {
@@ -55,8 +56,30 @@ async function main() {
     const tokenId = decodedData[2];
     const futureExecutionDate = decodedData[3];
 
+    // convert unix timestamp to milliseconds
+    const ts_ms = futureExecutionDate * 1000;
+
+    // initialize new Date object
+    const date_ob = new Date(ts_ms);
+
+    // year as 4 digits (YYYY)
+    const year = date_ob.getFullYear();
+
+    // month as 2 digits (MM)
+    const month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+
+    // date as 2 digits (DD)
+    const date = ("0" + date_ob.getDate()).slice(-2);
+
+    // date as YYYY-MM-DD format
+    const futureExecutionDateYYYMMDD = (year + "-" + month + "-" + date);
+
+    console.log(chain)
+
+    console.log(chain == 1)
+
     try {
-      apiCall(contractAddress, tokenId, chain, futureExecutionDate, log);
+      apiCall(contractAddress, tokenId);
       db
         .collection('successLog')
         .insertOne(
@@ -69,6 +92,7 @@ async function main() {
             tokenIdString: tokenId.toString(),
             futureExecutionDate: futureExecutionDate,
             futureExecutionDateString: futureExecutionDate.toString(),
+            futureExecutionDateYYYMMDD: futureExecutionDateYYYMMDD,
             log: log
           }
         )
@@ -87,6 +111,7 @@ async function main() {
             tokenIdString: tokenId.toString(),
             futureExecutionDate: futureExecutionDate,
             futureExecutionDateString: futureExecutionDate.toString(),
+            futureExecutionDateYYYMMDD: futureExecutionDateYYYMMDD,
             log: log
           }
         )
@@ -104,7 +129,8 @@ async function main() {
             tokenId: tokenId,
             tokenIdString: tokenId.toString(),
             futureExecutionDate: futureExecutionDate,
-            futureExecutionDateString: futureExecutionDate.toString()
+            futureExecutionDateString: futureExecutionDate.toString(),
+            futureExecutionDateYYYMMDD: futureExecutionDateYYYMMDD,
           }
         )
       console.log(`Found event with future action requirement. \n ____________ \n`)

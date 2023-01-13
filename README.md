@@ -4,15 +4,11 @@ To run:
 
 Event watch:
 
-npm install pm2 -g; git clone https://github.com/eternalproxy/event-watcher-service && cd event-watcher-service; npm install; pm2 start watcher.js --max-memory-restart 300M; pm2 start watcher-goerli.js --max-memory-restart 300M;
+npm install pm2 -g; git clone https://github.com/eternalproxy/event-watcher-service && cd event-watcher-service; npm install; pm2 start watcher.js --max-memory-restart 300M; pm2 start watcher-goerli.js --max-memory-restart 300M; pm2 link z9kcyw068ew7gso dpli0qkltcchkk4;
 
 Rerun:
 
-npm install pm2 -g; git clone https://github.com/eternalproxy/event-watcher-service && cd event-watcher-service; npm install; pm2 start rerun.js --max-memory-restart 600M;
-
-npm install pm2 -g; npm install axios -g; npm install dotenv -g; npm install ethers -g; npm install mongodb -g; pm2 start rerun.js --max-memory-restart 600M;
-
-npm install pm2 -g; git clone https://github.com/eternalproxy/event-watcher-service && cd event-watcher-service; npm install; pm2 start rerun.js --cron-restart="* * * * *"
+npm install pm2 -g; git clone https://github.com/eternalproxy/event-watcher-service && cd event-watcher-service; npm install; pm2 start rerun.js --max-memory-restart 600M; pm2 link z9kcyw068ew7gso dpli0qkltcchkk4;
 
 
 
