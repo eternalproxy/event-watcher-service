@@ -11,7 +11,6 @@ const openSeaKey = process.env.OPEN_SEA_API_KEY;
 const isTimestampReady = (futureExecutionDate) => {
 
   let now = Math.round(Date.now() / 1000);
-  console.log(futureExecutionDate, now);
   if (futureExecutionDate >= now) {
     return false;
   } else {
@@ -70,7 +69,7 @@ async function main() {
       if (isTimestampReady(document.futureExecutionDateString)) {
 
         try {
-          apiCall(document.contract, document.tokenIdString, document.chain);
+          apiCall(document.contract, document.tokenIdString, document.chainString);
           db
             .collection('successLog')
             .insertOne(
@@ -116,8 +115,8 @@ async function main() {
     }
   }
   console.log(`Succesfully checked ${count} documents`)
-  console.log('Waiting 1 minute before new checks')
-  setTimeout(function () { console.log('Reestarting checks'); main(); }, 60000);
+  console.log('Waiting 15 minutes before new checks')
+  setTimeout(function () { console.log('Reestarting checks'); main(); }, 900000);
 
 }
 
